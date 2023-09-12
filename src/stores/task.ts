@@ -1,6 +1,6 @@
 import { action, computed, makeAutoObservable, observable } from 'mobx'
 
-import { TodoInterface } from '../types/types'
+import { TaskInterface } from '../types/interfaces'
 
 const STORAGE_KEY = '@tasks'
 
@@ -11,7 +11,9 @@ export class Task {
     }
 
     protected fetchs() {
-        this._tasks = JSON.parse(localStorage[STORAGE_KEY])
+        if (localStorage[STORAGE_KEY]) {
+            this._tasks = JSON.parse(localStorage[STORAGE_KEY])
+        }
     }
 
     protected sync() {
@@ -19,10 +21,10 @@ export class Task {
     }
 
     @observable
-    protected _tasks: TodoInterface[] = []
+    protected _tasks: TaskInterface[] = []
 
     @observable
-    protected _taskEdit?: TodoInterface
+    protected _taskEdit?: TaskInterface
 
     @computed
     get taskEdit() {
@@ -30,7 +32,7 @@ export class Task {
     }
 
     @action
-    edit(task: TodoInterface) {
+    edit(task: TaskInterface) {
         this._taskEdit = task
     }
 
@@ -56,7 +58,7 @@ export class Task {
         return rand
     }
 
-    protected find(id: TodoInterface['id'], callback: (task: TodoInterface, index: number) => void) {
+    protected find(id: TaskInterface['id'], callback: (task: TaskInterface, index: number) => void) {
         const index = this._tasks.findIndex((task) => task.id === id)
 
         if (index !== -1) {
@@ -65,9 +67,9 @@ export class Task {
     }
 
     @action
-    add(text: string) {
+    add(title: string) {
         this._tasks.push({
-            text,
+            title,
             id: this.generateId(),
             isDone: false,
             updatedAt: new Date().getTime()
@@ -77,11 +79,11 @@ export class Task {
     }
 
     @action
-    update(id: TodoInterface['id'], text: string) {
+    update(id: TaskInterface['id'], title: string) {
         this.find(id, (task, i) => {
             this._tasks[i] = {
                 ...task,
-                text,
+                title,
             }
 
             this._taskEdit = undefined
@@ -90,7 +92,7 @@ export class Task {
     }
 
     @action
-    remove(id: TodoInterface['id']) {
+    remove(id: TaskInterface['id']) {
         this.find(id, (_, i) => {
             this._tasks.splice(i, 1)
             this.sync()
@@ -98,7 +100,7 @@ export class Task {
     }
 
     @action
-    toggleDone(id: TodoInterface['id']) {
+    toggleDone(id: TaskInterface['id']) {
         this.find(id, (task, i) => {
             this._tasks[i] = {
                 ...task,

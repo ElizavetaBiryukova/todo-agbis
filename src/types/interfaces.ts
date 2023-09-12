@@ -1,6 +1,6 @@
-export interface TodoInterface {
+export interface TaskInterface {
     id: number
-    text: string
+    title: string
     isDone: boolean
     updatedAt: number
 }
