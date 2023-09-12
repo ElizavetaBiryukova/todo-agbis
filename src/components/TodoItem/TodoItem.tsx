@@ -4,9 +4,6 @@ const TodoItem = () => {
     return (
         <div className='flex flex-col items-left gap-5 justify-between mb-8 rounded-2xl bg-zinc-100 p-5 w-full text-black border-t-2 border-t-indigo-500 laptop:flex-row
         '>
-            <h2 className='text-xl tablet:text-2xl'>
-                Title
-            </h2>
             <p className='text-l tablet:text-xl'>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam velit deleniti provident mollitia sint eligendi impedit.
             </p>
