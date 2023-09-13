@@ -1,10 +1,12 @@
 import { observer } from 'mobx-react'
 import { useEffect, useRef, useState } from 'react'
-
+import { useTranslation } from 'react-i18next';
 import { useStore } from '../stores'
 
 export const NewTodoForm = observer(() => {
   const store = useStore()
+
+  const { t } = useTranslation();
 
   const [title, setTitle] = useState('')
 
@@ -50,7 +52,7 @@ export const NewTodoForm = observer(() => {
         onInput={(e) => setTitle(e.currentTarget.value)}
         onKeyDown={(e) => (e.key === 'Enter' ? submit() : '')}
         type="text"
-        placeholder="+ add new task"
+        placeholder={t("add new task")}
         className="bg-transparent outline-0 flex-1 px-3"
       />
 
@@ -58,7 +60,7 @@ export const NewTodoForm = observer(() => {
         onClick={() => submit()}
         className="px-3 py-1.5 text-xl text-light rounded-lg"
       >
-        {store.task.taskEdit ? 'update' : 'add'}
+        {store.task.taskEdit ? `${t("update")}` : `${t("add")}`}
       </button>
     </div>
   )
